@@ -104,15 +104,6 @@ Follow these steps to set up the MySQL database:
    python Codigo\ qt.py
    ```
 
-3. Use the following SQL query to retrieve patient information along with their exams:
-
-   ```sql
-   SELECT p.*, e.examen, e.resultado
-   FROM pacientes p
-   LEFT JOIN examenes e ON p.id_paciente = e.id_paciente
-   WHERE p.id_paciente = %s;
-   ```
-
 ## Contributing
 
 Contributions are welcome! If you have suggestions or improvements, please create an issue or submit a pull request. Follow these steps to contribute:
