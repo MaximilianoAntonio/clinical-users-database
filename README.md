@@ -1,4 +1,5 @@
 
+
 # Clinical Users Database
 
 This repository contains the source code for a Clinical Users Database application. The application is designed to manage and store information about clinical users efficiently.
@@ -8,6 +9,7 @@ This repository contains the source code for a Clinical Users Database applicati
 - [Introduction](#introduction)
 - [Features](#features)
 - [Installation](#installation)
+- [Database Setup](#database-setup)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -30,7 +32,7 @@ Ensure you have the following installed:
 
 - Python 3.x
 - PyQt5
-- SQLite3 (or any other preferred database system)
+- MySQL
 
 ### Steps
 
@@ -44,7 +46,52 @@ Ensure you have the following installed:
 2. Install the required Python packages:
 
    ```sh
-   pip install PyQt5
+   pip install PyQt5 mysql-connector-python
+   ```
+
+## Database Setup
+
+Follow these steps to set up the MySQL database:
+
+1. Open your MySQL command line or use a database management tool like phpMyAdmin.
+
+2. Create a new database:
+
+   ```sql
+   CREATE DATABASE clinical_users_db;
+   ```
+
+3. Switch to the new database:
+
+   ```sql
+   USE clinical_users_db;
+   ```
+
+4. Create the `pacientes` table:
+
+   ```sql
+   CREATE TABLE pacientes (
+       id_paciente INT AUTO_INCREMENT PRIMARY KEY,
+       nombres VARCHAR(255) NOT NULL,
+       apellidos VARCHAR(255) NOT NULL,
+       rut VARCHAR(20) NOT NULL,
+       direccion VARCHAR(255) NOT NULL,
+       edad INT NOT NULL,
+       fecha_ingreso DATE NOT NULL,
+       correo VARCHAR(255) NOT NULL
+   );
+   ```
+
+5. Create the `examenes` table:
+
+   ```sql
+   CREATE TABLE examenes (
+       id_examen INT AUTO_INCREMENT PRIMARY KEY,
+       id_paciente INT,
+       examen VARCHAR(255) NOT NULL,
+       resultado VARCHAR(255) NOT NULL,
+       FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
+   );
    ```
 
 ## Usage
@@ -55,6 +102,15 @@ Ensure you have the following installed:
 
    ```sh
    python Codigo\ qt.py
+   ```
+
+3. Use the following SQL query to retrieve patient information along with their exams:
+
+   ```sql
+   SELECT p.*, e.examen, e.resultado
+   FROM pacientes p
+   LEFT JOIN examenes e ON p.id_paciente = e.id_paciente
+   WHERE p.id_paciente = %s;
    ```
 
 ## Contributing
